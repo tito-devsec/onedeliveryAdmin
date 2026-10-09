@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../lib/api.js";
 import { MapPin, Search } from "lucide-react";
-import { formatDate, formatMoney, statusBadge, vehicleEmoji } from "../lib/utils.js";
+import { formatDate, formatMoney, statusBadge, vehicleImage, vehicleName } from "../lib/utils.js";
 
 const DELIVERY_STATUSES = ["all","searching","accepted","going_to_shop","picked_up","on_the_way","delivered","cancelled","no_driver"];
 
@@ -76,7 +76,7 @@ export default function DeliveriesPage() {
               <div key={d.id} className={`bg-slate-900 rounded-xl border p-5 transition-all ${isLive ? "border-green-500/30" : "border-slate-800"}`}>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{vehicleEmoji(d.vehicle_type)}</span>
+                    <img src={vehicleImage(d.vehicle_type)} alt={vehicleName(d.vehicle_type)} title={vehicleName(d.vehicle_type)} className="w-14 h-10 object-contain shrink-0" />
                     <div>
                       <div className="flex items-center gap-2 mb-0.5">
                         <p className="text-white font-bold text-sm">#{d.id.slice(-8).toUpperCase()}</p>
@@ -88,7 +88,15 @@ export default function DeliveriesPage() {
                       <p className="text-slate-400 text-xs">{formatDate(d.created_at)}</p>
                     </div>
                   </div>
-                  <p className="text-orange-400 font-bold">{formatMoney(d.fare)}</p>
+                  <div className="text-right">
+                    <p className="text-orange-400 font-bold">{formatMoney(d.fare)}</p>
+                    {d.suggested_fare != null && parseFloat(d.suggested_fare) !== parseFloat(d.fare) && (
+                      <p className="text-slate-500 text-xs">suggested {formatMoney(d.suggested_fare)}</p>
+                    )}
+                    <p className={`text-xs font-semibold ${Number(d.delivery_fee_paid) ? "text-green-400" : "text-slate-400"}`}>
+                      {Number(d.delivery_fee_paid) ? "Paid in app" : d.payment_method === "cash" ? "Cash to driver" : "Mobile money (unpaid)"}
+                    </p>
+                  </div>
                 </div>
                 <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
                   {[

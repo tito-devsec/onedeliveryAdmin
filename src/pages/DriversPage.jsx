@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/api.js";
 import { Bike, CheckCircle, XCircle, FileText, X } from "lucide-react";
-import { formatDate, statusBadge, vehicleEmoji } from "../lib/utils.js";
+import { formatDate, statusBadge, vehicleImage, vehicleName } from "../lib/utils.js";
 
 export default function DriversPage() {
   const qc = useQueryClient();
@@ -49,8 +49,8 @@ export default function DriversPage() {
             <div key={app.id} className="bg-slate-900 rounded-xl border border-slate-800 p-5 hover:border-slate-700 transition-all">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-2xl">
-                    {vehicleEmoji(app.vehicle_type)}
+                  <div className="w-16 h-12 rounded-xl bg-white/90 flex items-center justify-center">
+                    <img src={vehicleImage(app.vehicle_type)} alt={vehicleName(app.vehicle_type)} className="w-14 h-10 object-contain" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-0.5">

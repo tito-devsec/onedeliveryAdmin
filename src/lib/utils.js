@@ -40,8 +40,15 @@ export function statusBadge(status) {
   return map[status?.toLowerCase()] || "bg-slate-500/20 text-slate-400 border-slate-500/30";
 }
 
-export function vehicleEmoji(type) {
-  return { bodaboda: "🏍️", bajaj: "🛺", pickup: "🚛", toyo: "🚙" }[type] || "🚗";
+const VEHICLES = { bodaboda: "Bodaboda", bajaj: "Bajaj", toyo: "Toyo", pickup: "Pickup / Carry" };
+
+// Side-view picture of a vehicle type (public/vehicles/<type>.png)
+export function vehicleImage(type) {
+  return `/vehicles/${type in VEHICLES ? type : "bodaboda"}.png`;
+}
+
+export function vehicleName(type) {
+  return VEHICLES[type] || type || "Vehicle";
 }
 
 export function getErrorMessage(err) {
